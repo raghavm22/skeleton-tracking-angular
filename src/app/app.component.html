@@ -1,0 +1,57 @@
+<!-- <div class="pose-container">
+  <video #videoElement autoplay playsinline src="assets/video.mp4" controls width="700" loop muted></video>
+  <canvas #canvasElement width="640" height="480"></canvas>
+</div> -->
+
+
+<div class="pose-container">
+  <video #videoElement src="assets/video.mp4" autoplay loop muted controls width="700"></video>
+  <video #cameraElement autoplay muted style="transform: scaleX(-1);"></video>
+</div>
+
+<div class="pose-container">
+  <canvas #canvasElement1 width="640" height="480"></canvas>
+  <canvas #canvasElement2 width="640" height="480" style="transform: scaleX(-1);"></canvas>
+</div>
+<div class="pose-container">
+  <div class="angle-display">
+    <h2>Recorded Angles from Video</h2>
+    <div class="angle-card">
+      <h3>Left Wrist</h3>
+      <p>Minimum Angle: {{ minVideoAngle['leftWrist'] | number: '1.0-2' }}°</p>
+      <p>Maximum Angle: {{ maxVideoAngle['leftWrist'] | number: '1.0-2' }}°</p>
+    </div>
+
+    <div class="angle-card">
+      <h3>Right Wrist</h3>
+      <p>Minimum Angle: {{ minVideoAngle['rightWrist'] | number: '1.0-2' }}°</p>
+      <p>Maximum Angle: {{ maxVideoAngle['rightWrist'] | number: '1.0-2' }}°</p>
+    </div>
+  </div>
+  <div class="angle-display">
+    <h2>Recorded Angles from Camera</h2>
+
+    <div class="angle-card">
+      <h3>Left Wrist</h3>
+      <p>Left Wrist Angle: {{ cameraAngle['leftWrist'] | number: '1.0-2' }}°</p>
+      <p class="matching" *ngIf="leftMatching">
+        Left Match: Left Wrist is matching the video angle
+      </p>
+      <p class="not-matching" *ngIf="!leftMatching">
+        Left Match: Left Wrist is not matching the video angle
+      </p>
+    </div>
+
+    <div class="angle-card">
+      <h3>Right Wrist</h3>
+      <p>Right Wrist Angle: {{ cameraAngle['rightWrist'] | number: '1.0-2' }}°</p>
+      <p class="matching" *ngIf="rightMatching">
+        Right Match: Right Wrist is matching the video angle
+      </p>
+      <p class="not-matching" *ngIf="!rightMatching">
+        Right Match: Right Wrist is not matching the video angle
+      </p>
+    </div>
+  </div>
+
+</div>

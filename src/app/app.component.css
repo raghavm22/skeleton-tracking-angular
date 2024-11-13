@@ -1,0 +1,62 @@
+.pose-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* flex-direction: column; */
+}
+
+canvas {
+  border: 1px solid #ccc;
+}
+
+.angle-display {
+  font-family: Arial, sans-serif;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.angle-display h2 {
+  text-align: center;
+  color: #333;
+}
+
+.angle-card {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #e0f7fa;
+}
+
+.angle-card h3 {
+  color: #000;
+  margin: 0;
+}
+
+.angle-card p {
+  margin: 5px 0;
+  color: #000;
+  font-weight: bold;
+}
+
+.camera-video {
+  transform: scaleX(-1);
+  /* Mirroring the video */
+  object-fit: cover;
+  /* Ensures the video stretches to fill the element */
+  width: 100%;
+  height: 100%;
+}
+
+.matching {
+  color: #008000 !important;
+}
+
+.not-matching {
+  color: #ff0000 !important;
+}
