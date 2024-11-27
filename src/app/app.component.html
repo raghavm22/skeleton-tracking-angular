@@ -5,7 +5,7 @@
 
 
 <div class="pose-container">
-  <video #videoElement src="assets/video.mp4" autoplay loop muted controls width="700"></video>
+  <video #videoElement src="/assets/st-video/video.mp4" autoplay muted controls width="700" (ended)="generateCSV()"></video>
   <video #cameraElement autoplay muted style="transform: scaleX(-1);"></video>
 </div>
 
@@ -18,12 +18,14 @@
     <h2>Recorded Angles from Video</h2>
     <div class="angle-card">
       <h3>Left Wrist</h3>
+      <p>Left Current Angle: {{ videoAngle['leftWrist'] | number: '1.0-2' }}°</p>
       <p>Minimum Angle: {{ minVideoAngle['leftWrist'] | number: '1.0-2' }}°</p>
       <p>Maximum Angle: {{ maxVideoAngle['leftWrist'] | number: '1.0-2' }}°</p>
     </div>
 
     <div class="angle-card">
       <h3>Right Wrist</h3>
+      <p>Right Current Angle: {{ videoAngle['rightWrist'] | number: '1.0-2' }}°</p>
       <p>Minimum Angle: {{ minVideoAngle['rightWrist'] | number: '1.0-2' }}°</p>
       <p>Maximum Angle: {{ maxVideoAngle['rightWrist'] | number: '1.0-2' }}°</p>
     </div>
