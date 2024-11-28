@@ -195,8 +195,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.saveToCSV(matchingClipData.matchingData, 'clip_min_max_matches.csv');
     this.saveToCSV(matchingPatientData.matchingData, 'patient_min_max_matches.csv');
 
-    const results = this.matchClipAndPatientData(matchingClipData.matchingData, matchingPatientData.matchingData);
-    this.saveToCSV(results, 'min_max_matches.csv');
+    const results = this.matchClipAndPatientData(matchingClipData.matchingData, this.matchingCameraData);
+    const updateComments = this.updateComments(results);
+    this.saveToCSV(updateComments, 'min_max_matches.csv');
   }
 
   matchClipAndPatientData(matchingClipData: any[], matchingPatientData: any[]) {
@@ -209,10 +210,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       const closestPatient = matchingPatientData.reduce(
         (closest, patientEntry) => {
           const timeDiff = Math.abs(+clipEntry.timestamp - +patientEntry.timestamp);
-          const angleDiff = Math.abs(clipEntry.Deg - patientEntry.Deg);
+          const angleDiff = Math.abs(clipEntry.Deg - patientEntry['RSA Deg']);
 
-          if (!closest || timeDiff < closest.timeDiff || (timeDiff === closest.timeDiff && angleDiff < closest.angleDiff)) {
-            return { patientEntry, timeDiff, angleDiff };
+          if (timeDiff <= timeThreshold) {
+            if (!closest || angleDiff < closest.angleDiff || (angleDiff === closest.angleDiff && timeDiff < closest.timeDiff)) {
+              return { patientEntry, timeDiff, angleDiff };
+            }
           }
           return closest;
         },
@@ -229,14 +232,34 @@ export class AppComponent implements OnInit, AfterViewInit {
         ClipMinMax: clipEntry["Min/Max"],
         ClipTimestamp: clipEntry.timestamp,
         ClipDeg: clipEntry.Deg,
-        PatientMinMax: closestPatient?.patientEntry["Min/Max"],
+        PatientMinMax: clipEntry["Min/Max"],
         PatientTimestamp: closestPatient?.patientEntry.timestamp,
-        PatientDeg: closestPatient?.patientEntry.Deg,
+        PatientDeg: closestPatient?.patientEntry['RSA Deg'],
         Comments: isGood ? "Good" : "Not Good",
       });
     });
 
     return results;
+  }
+
+  updateComments(matchingData: any[]) {
+    const timestampThreshold = 2; // Difference in seconds
+    const angleThreshold = 3; // Difference in degrees
+
+    matchingData.forEach((entry) => {
+      const timestampDiff = Math.abs(+entry.ClipTimestamp - +entry.PatientTimestamp);
+      const angleDiff = +entry.ClipDeg - +entry.PatientDeg;
+
+      if (timestampDiff > timestampThreshold) {
+        entry.Comments = "Too Late";
+      } else if (angleDiff > angleThreshold) {
+        entry.Comments = "Too Low";
+      } else if (angleDiff < -angleThreshold) {
+        entry.Comments = "Too High";
+      }
+    });
+
+    return matchingData;
   }
 
   getClipPatientData(data: any) {
@@ -246,7 +269,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     let maxRSA = -Infinity;
 
     // Identify the min and max values for LSA and RSA
-    data.forEach((entry: any) => {
+    data.forEach(entry => {
       if (+entry['LSA Deg'] < minLSA) minLSA = entry['LSA Deg'] > 3 ? entry['LSA Deg'] : 3;
       if (+entry['LSA Deg'] > maxLSA) maxLSA = entry['LSA Deg'];
       if (+entry['RSA Deg'] < minRSA) minRSA = entry['RSA Deg'] > 3 ? entry['RSA Deg'] : 3;
@@ -258,11 +281,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     const timeThreshold = 8; // in seconds
 
     // Initialize tracking variables for timestamps
-    const lastTimestamps = {
-      minLSA: 0,
-      maxLSA: 0,
-      minRSA: 0,
-      maxRSA: 0,
+    const lastTimestamps: any = {
+      minLSA: null,
+      maxLSA: null,
+      minRSA: null,
+      maxRSA: null,
     };
 
     // Store nearby values
@@ -289,17 +312,18 @@ export class AppComponent implements OnInit, AfterViewInit {
           // Push the value if time gap condition is met
           nearbyValues[key].push({ timestamp: entry.timestamp, [valueKey]: entry[valueKey] });
           lastTimestamps[key] = currentTimestamp; // Update last timestamp
-          if (valueKey.indexOf('RSA') > -1)
+          if (valueKey.indexOf('RSA') > -1 && key.indexOf('RSA') > -1) {
             matchingData.push({ 'Min/Max': key.indexOf('min') > -1 ? 'Min Value' : 'Max Value', timestamp: entry.timestamp, Deg: entry[valueKey] });
+          }
         }
       }
     }
 
     // Iterate over the dataset
-    data.forEach((entry: any) => {
+    data.forEach((entry, index) => {
       // Check nearby values for min and max LSA
-      checkAndPush(entry, 'minLSA', minLSA, 'LSA Deg');
-      checkAndPush(entry, 'maxLSA', maxLSA, 'LSA Deg');
+      // checkAndPush(entry, 'minLSA', minLSA, 'LSA Deg');
+      // checkAndPush(entry, 'maxLSA', maxLSA, 'LSA Deg');
 
       // Check nearby values for min and max RSA
       checkAndPush(entry, 'minRSA', minRSA, 'RSA Deg');
@@ -316,11 +340,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     };
   }
 
-  calculateAllMinMaxComparisons(clipData: any, patientData: any) {
+  calculateAllMinMaxComparisons(clipData, patientData) {
     const results: any = [];
 
     // Helper function to find all min and max points
-    const getAllMinMaxPoints = (data: any, key: any) => {
+    const getAllMinMaxPoints = (data, key) => {
       const sortedData = [...data].sort((a, b) => a[key] - b[key]);
       const minPoints = sortedData.filter((point) => point[key] === sortedData[0][key]);
       const maxPoints = sortedData.filter((point) => point[key] === sortedData[sortedData.length - 1][key]);
