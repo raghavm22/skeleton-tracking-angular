@@ -626,34 +626,38 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
 
         // Additional code to draw pose landmarks and connections on the canvas
-        results.poseLandmarks.forEach((landmark) => {
-          canvasCtx.beginPath();
-          canvasCtx.arc(
-            landmark.x * canvasElement.width,
-            landmark.y * canvasElement.height,
-            5,
-            0,
-            2 * Math.PI
-          );
-          canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.6)';
-          canvasCtx.fill();
+        results.poseLandmarks.forEach((landmark, index) => {
+          if (index === 11 || index === 12 || index === 13 || index === 14 || index === 15 || index === 16 || index === 23 || index === 24) {
+            canvasCtx.beginPath();
+            canvasCtx.arc(
+              landmark.x * canvasElement.width,
+              landmark.y * canvasElement.height,
+              5,
+              0,
+              2 * Math.PI
+            );
+            canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.6)';
+            canvasCtx.fill();
+          }
         });
 
         POSE_CONNECTIONS.forEach(([start, end]) => {
-          const startLandmark = results.poseLandmarks[start];
-          const endLandmark = results.poseLandmarks[end];
-          canvasCtx.beginPath();
-          canvasCtx.moveTo(
-            startLandmark.x * canvasElement.width,
-            startLandmark.y * canvasElement.height
-          );
-          canvasCtx.lineTo(
-            endLandmark.x * canvasElement.width,
-            endLandmark.y * canvasElement.height
-          );
-          canvasCtx.lineWidth = 2;
-          canvasCtx.strokeStyle = 'rgba(0, 255, 0, 0.6)';
-          canvasCtx.stroke();
+          if ((start === 11 && (end === 13 || end === 23)) || (start === 12 && (end === 14 || end === 24)) || (start === 13 && end === 15) || (start === 14 && end === 16)) {
+            const startLandmark = results.poseLandmarks[start];
+            const endLandmark = results.poseLandmarks[end];
+            canvasCtx.beginPath();
+            canvasCtx.moveTo(
+              startLandmark.x * canvasElement.width,
+              startLandmark.y * canvasElement.height
+            );
+            canvasCtx.lineTo(
+              endLandmark.x * canvasElement.width,
+              endLandmark.y * canvasElement.height
+            );
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = 'rgba(0, 255, 0, 0.6)';
+            canvasCtx.stroke();
+          }
         });
       }
     }
@@ -703,34 +707,38 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
 
         // Additional code to draw pose landmarks and connections on the canvas
-        results.poseLandmarks.forEach((landmark) => {
-          canvasCtx.beginPath();
-          canvasCtx.arc(
-            landmark.x * canvasElement.width,
-            landmark.y * canvasElement.height,
-            5,
-            0,
-            2 * Math.PI
-          );
-          canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.6)';
-          canvasCtx.fill();
+        results.poseLandmarks.forEach((landmark, index) => {
+          if (index === 11 || index === 12 || index === 13 || index === 14 || index === 15 || index === 16 || index === 23 || index === 24) {
+            canvasCtx.beginPath();
+            canvasCtx.arc(
+              landmark.x * canvasElement.width,
+              landmark.y * canvasElement.height,
+              5,
+              0,
+              2 * Math.PI
+            );
+            canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.6)';
+            canvasCtx.fill();
+          }
         });
 
         POSE_CONNECTIONS.forEach(([start, end]) => {
-          const startLandmark = results.poseLandmarks[start];
-          const endLandmark = results.poseLandmarks[end];
-          canvasCtx.beginPath();
-          canvasCtx.moveTo(
-            startLandmark.x * canvasElement.width,
-            startLandmark.y * canvasElement.height
-          );
-          canvasCtx.lineTo(
-            endLandmark.x * canvasElement.width,
-            endLandmark.y * canvasElement.height
-          );
-          canvasCtx.lineWidth = 2;
-          canvasCtx.strokeStyle = 'rgba(0, 255, 0, 0.6)';
-          canvasCtx.stroke();
+          if ((start === 11 && (end === 13 || end === 23)) || (start === 12 && (end === 14 || end === 24)) || (start === 13 && end === 15) || (start === 14 && end === 16)) {
+            const startLandmark = results.poseLandmarks[start];
+            const endLandmark = results.poseLandmarks[end];
+            canvasCtx.beginPath();
+            canvasCtx.moveTo(
+              startLandmark.x * canvasElement.width,
+              startLandmark.y * canvasElement.height
+            );
+            canvasCtx.lineTo(
+              endLandmark.x * canvasElement.width,
+              endLandmark.y * canvasElement.height
+            );
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = 'rgba(0, 255, 0, 0.6)';
+            canvasCtx.stroke();
+          }
         });
       }
     }
