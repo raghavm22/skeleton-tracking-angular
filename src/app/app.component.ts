@@ -164,13 +164,13 @@ export class AppComponent implements OnInit, AfterViewInit {
       return { min, max };
     };
 
-    const { min: minVideoLSA, max: maxVideoLSA } = getMinMax(this.matchingVideoData, 'LSA Deg');
-    const { min: minVideoRSA, max: maxVideoRSA } = getMinMax(this.matchingVideoData, 'RSA Deg');
+    // const { min: minVideoLSA, max: maxVideoLSA } = getMinMax(this.matchingVideoData, 'LSA Deg');
+    // const { min: minVideoRSA, max: maxVideoRSA } = getMinMax(this.matchingVideoData, 'RSA Deg');
 
-    const { min: minCameraLSA, max: maxCameraLSA } = getMinMax(this.matchingCameraData, 'LSA Deg');
-    const { min: minCameraRSA, max: maxCameraRSA } = getMinMax(this.matchingCameraData, 'RSA Deg');
+    // const { min: minCameraLSA, max: maxCameraLSA } = getMinMax(this.matchingCameraData, 'LSA Deg');
+    // const { min: minCameraRSA, max: maxCameraRSA } = getMinMax(this.matchingCameraData, 'RSA Deg');
 
-    const blankRow = { timestamp: '', 'LSA Deg': '', 'RSA Deg': '', Type: '' };
+    // const blankRow = { timestamp: '', 'LSA Deg': '', 'RSA Deg': '', Type: '' };
     // this.matchingVideoData.push(blankRow, blankRow, blankRow, blankRow);
     // this.matchingCameraData.push(blankRow, blankRow, blankRow, blankRow);
 
@@ -182,18 +182,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   { timestamp: minCameraLSA.timestamp, 'LSA Deg': minCameraLSA['LSA Deg'], 'RSA Deg': minCameraRSA['RSA Deg'] },
     //   { timestamp: maxCameraRSA.timestamp, 'LSA Deg': maxCameraLSA['LSA Deg'], 'RSA Deg': maxCameraRSA['RSA Deg'] },
     // )
-    this.saveToCSV(this.matchingVideoData, 'video_matching_data.csv');
-    this.saveToCSV(this.matchingCameraData, 'camera_matching_data.csv');
+    // this.saveToCSV(this.matchingVideoData, 'video_matching_data.csv');
+    // this.saveToCSV(this.matchingCameraData, 'camera_matching_data.csv');
 
     const matchingClipData = this.getClipPatientData(this.matchingVideoData);
     const matchingPatientData = this.getClipPatientData(this.matchingCameraData);
-    console.log('matchingClipData', matchingClipData);
-    console.log('matchingPatientData', matchingPatientData);
+    // console.log('matchingClipData', matchingClipData);
+    // console.log('matchingPatientData', matchingPatientData);
 
     // const matchingData = this.calculateAllMinMaxComparisons(this.matchingVideoData, this.matchingCameraData);
     // // this.saveComparisonToCSV(matchingData);
-    this.saveToCSV(matchingClipData.matchingData, 'clip_min_max_matches.csv');
-    this.saveToCSV(matchingPatientData.matchingData, 'patient_min_max_matches.csv');
+    // this.saveToCSV(matchingClipData.matchingData, 'clip_min_max_matches.csv');
+    // this.saveToCSV(matchingPatientData.matchingData, 'patient_min_max_matches.csv');
 
     const results = this.matchClipAndPatientData(matchingClipData.matchingData, this.matchingCameraData);
     const updateComments = this.updateComments(results);
